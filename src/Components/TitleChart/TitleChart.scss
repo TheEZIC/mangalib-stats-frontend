@@ -1,0 +1,22 @@
+.chart {
+  max-width: 500px;
+  margin: 0px 30px;
+  margin-bottom: 30px;
+  padding: 0px 20px;
+  background: darken(white, 10%);
+  border-radius: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-content: flex-start;
+  box-shadow: 6px 6px 12px 0px rgba(0,0,0,0.35);
+  &__title {
+    width: 100%;
+    margin-bottom: 30px;
+  }
+  canvas {
+    width: 300px;
+    height: 200px;
+  }
+}
