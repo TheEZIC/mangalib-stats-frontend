@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
 import { Line } from 'react-chartjs-2';
-import {IMangaTitle} from "../App";
+import {IMangaTitle, ITimingParsed} from "../App";
+
+import "./TitleChart.scss";
 
 interface IState {
-
+    croppedTimingParsed: ITimingParsed[];
 }
 
 interface IProps {
@@ -11,6 +13,10 @@ interface IProps {
 }
 
 class TitleChart extends Component<IProps, IState> {
+    state: IState = {
+        croppedTimingParsed: []
+    }
+
     options = {
         responsive: false,
         interaction: {
@@ -20,32 +26,50 @@ class TitleChart extends Component<IProps, IState> {
         stacked: false,
     }
 
-    adaptParseResultToChart() {
-        const {parseResult} = this.props;
-        parseResult.timingsParsed = parseResult.timingsParsed.splice(-10);
+    componentDidMount() {
+        const croppedTimingParsed = this.props.parseResult.timingsParsed.splice(-10);
+        this.setState({croppedTimingParsed});
+    }
+
+    adaptRatingChartData() {
+        const {croppedTimingParsed} = this.state;
 
         return {
-            labels: parseResult.timingsParsed.map((t, i) => i),
-            datasets: [
-                {
-                    label: "rating",
-                    data: parseResult.timingsParsed.map(t => t.rating),
-                    backgroundColor: "rgb(163, 55, 215)",
-                    borderColor: "rgba(163, 55, 215, 0.2)",
-                },
-                {
-                    label: "views",
-                    data: parseResult.timingsParsed.map(t => t.views),
-                    backgroundColor: "rgb(215, 55, 80)",
-                    borderColor: "rgba(215, 55, 80, 0.2)",
-                },
-                {
-                    label: "votes",
-                    data: parseResult.timingsParsed.map(t => t.votes),
-                    backgroundColor: "rgb(60, 215, 55)",
-                    borderColor: "rgba(60, 215, 55, 0.2)",
-                },
-            ]
+            labels: croppedTimingParsed?.map((t, i) => i),
+            datasets: [{
+                label: "rating",
+                data: croppedTimingParsed?.map(t => t.rating),
+                backgroundColor: "rgb(163, 55, 215)",
+                borderColor: "rgba(163, 55, 215, 0.2)",
+            }]
+        }
+    }
+
+    adaptViewsChartData() {
+        const {croppedTimingParsed} = this.state;
+
+        return {
+            labels: croppedTimingParsed?.map((t, i) => i),
+            datasets: [{
+                label: "views",
+                data: croppedTimingParsed?.map(t => t.views),
+                backgroundColor: "rgb(60, 215, 55)",
+                borderColor: "rgba(60, 215, 55, 0.2)",
+            }]
+        }
+    }
+
+    adaptVotesChartData() {
+        const {croppedTimingParsed} = this.state;
+
+        return {
+            labels: croppedTimingParsed?.map((t, i) => i),
+            datasets: [{
+                label: "votes",
+                data: croppedTimingParsed?.map(t => t.votes),
+                backgroundColor: "rgb(220, 190, 35)",
+                borderColor: "rgba(220, 190, 35, 0.2)",
+            }]
         }
     }
 
@@ -53,7 +77,11 @@ class TitleChart extends Component<IProps, IState> {
         return (
             <div className="chart">
                 <h2 className="chart__title">{this.props.parseResult.title}</h2>
-                <Line data={this.adaptParseResultToChart()} type={"line"} options={this.options}/>
+                <div className="chart__container">
+                    <Line data={this.adaptRatingChartData()} type={"line"} options={this.options}/>
+                    <Line data={this.adaptViewsChartData()} type={"line"} options={this.options}/>
+                    <Line data={this.adaptVotesChartData()} type={"line"} options={this.options}/>
+                </div>
             </div>
         );
     }

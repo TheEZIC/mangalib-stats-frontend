@@ -1,22 +1,31 @@
 .chart {
-  max-width: 500px;
-  margin: 0px 30px;
-  margin-bottom: 30px;
-  padding: 0px 20px;
-  background: darken(white, 10%);
+  width: 100%;
+  margin: 0px 30px 80px;
+  padding: 20px 20px;
+  background: darken(white, 4%);
   border-radius: 30px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   align-content: flex-start;
-  box-shadow: 6px 6px 12px 0px rgba(0,0,0,0.35);
+  box-shadow: 6px 6px 12px 0px rgba(0,0,0,0.15);
+
   &__title {
-    width: 100%;
-    margin-bottom: 30px;
+    font-size: 32px;
+    margin: 0px 5% 30px;
   }
+
+  &__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
   canvas {
-    width: 300px;
-    height: 200px;
+    margin: 0 20px;
+    width: 400px;
+    height: 350px;
   }
 }
